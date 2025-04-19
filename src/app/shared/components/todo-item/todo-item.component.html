@@ -1,0 +1,34 @@
+@switch (column) {
+  @case (EToDoKey.Title) {
+    <div class="todo-title" [matTooltip]="todo.title">
+      {{ todo[column] }}
+    </div>
+  }
+  @case (EToDoKey.TimeLeft) {
+    @if (timer()) {
+      <div [class.red-text]="timer()?.includes('0h')">
+        {{ timer() }}
+      </div>
+    }
+  }
+  @case (EToDoKey.Favorite) {
+    <button mat-icon-button
+            color="primary"
+            [disabled]="isTogglingFavorite()"
+            (click)="toggleFavorite(todo[EToDoKey.Id])"
+    >
+      <mat-icon>{{ todo.favorite ? 'favorite' : 'favorite_border' }}</mat-icon>
+    </button>
+  }
+  @case (EToDoKey.Action) {
+    <button mat-icon-button
+            color="warn"
+            [disabled]="isDeleting()"
+            (click)="remove()" >
+      <mat-icon>delete</mat-icon>
+    </button>
+  }
+  @default {
+    {{ todo[column] | date : 'MMM d, yyyy'}}
+  }
+}

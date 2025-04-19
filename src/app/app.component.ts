@@ -1,13 +1,21 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
+import { fader } from './route-animations';
+import { HeaderComponent } from './shared/components/header/header.component';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet],
+  imports: [RouterOutlet, HeaderComponent],
   templateUrl: './app.component.html',
-  styleUrl: './app.component.scss'
+  styleUrl: './app.component.scss',
+  animations: [fader],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AppComponent {
-  title = 'todo-list';
+  protected prepareRoute(outlet: RouterOutlet): boolean {
+    return outlet?.isActivated
+      ? outlet.activatedRouteData?.['animation'] || outlet.activatedRoute?.routeConfig?.path
+      : '';
+  }
 }

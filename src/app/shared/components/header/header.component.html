@@ -1,0 +1,34 @@
+<mat-toolbar color="primary" class="main-toolbar">
+  <button mat-icon-button class="menu-button" (click)="toggleMobileMenu()">
+    <mat-icon>menu</mat-icon>
+  </button>
+  <span class="logo">My TODO List</span>
+  <span class="spacer"></span>
+  <nav class="desktop-menu desktop">
+    @for (item of MENU; track item){
+      <a mat-button
+         routerLinkActive="active-link"
+         [routerLink]="item.path"
+         [routerLinkActiveOptions]="{ exact: true }"
+         (click)="toggleMobileMenu()"
+      >
+        {{item.title}}
+      </a>
+    }
+  </nav>
+</mat-toolbar>
+
+@if (mobileMenuOpen){
+  <div class="mobile-menu mobile">
+    @for (item of MENU; track item){
+      <a mat-list-item
+         routerLinkActive="active-link"
+         [routerLink]="item.path"
+         [routerLinkActiveOptions]="{ exact: true }"
+         (click)="toggleMobileMenu()"
+      >
+          {{item.title}}
+      </a>
+    }
+  </div>
+}

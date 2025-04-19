@@ -1,0 +1,61 @@
+<mat-card appearance="outlined" class="form-c">
+  <mat-card-header>
+    <mat-card-title>Add TODO</mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+    <button mat-icon-button (click)="back()">
+      <mat-icon>arrow_back</mat-icon>
+    </button>
+    @if (form) {
+      <form [formGroup]="form" (ngSubmit)="createOrUpdatedTodo()">
+        <mat-form-field appearance="outline" class="full-width mb-4">
+          <mat-label>Title</mat-label>
+          <textarea matInput [formControlName]="EToDoKey.Title" rows="3"></textarea>
+          @if (form.controls[EToDoKey.Title].invalid && (form.controls[EToDoKey.Title].touched || submitted)) {
+            <mat-error>
+              Title is required and must be less than 100 characters
+            </mat-error>
+          }
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="full-width mb-4">
+          <mat-label>Expiration Date</mat-label>
+          <input matInput [matDatepicker]="picker" [formControlName]="EToDoKey.ExpirationDate">
+          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+          @if (form.controls[EToDoKey.ExpirationDate].errors?.['required'] && (form.controls[EToDoKey.ExpirationDate].touched || submitted)) {
+            <mat-error>
+              Expiration Date is required
+            </mat-error>
+          }
+          @if (form.controls[EToDoKey.ExpirationDate].errors?.['minDate'] && (form.controls[EToDoKey.ExpirationDate].touched || submitted)) {
+            <mat-error>
+              Expiration Date must be on or
+              after {{ form.controls[EToDoKey.ExpirationDate].errors?.['minDate'].requiredDate | date : 'MMM d, yyyy' }}
+            </mat-error>
+          }
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="full-width mb-4">
+          <mat-label>Expiration Time</mat-label>
+          <ngx-material-timepicker-toggle matSuffix [for]="timepicker"></ngx-material-timepicker-toggle>
+          <input matInput [ngxTimepicker]="timepicker" [formControlName]="EToDoKey.ExpirationTime">
+          <ngx-material-timepicker #timepicker></ngx-material-timepicker>
+          @if (form.hasError('minDateTime') && (form.controls[EToDoKey.ExpirationTime]?.touched || submitted)) {
+            <mat-error>
+              Expiration Date and Time must be on or
+              after {{ form.errors?.['minDateTime']?.requiredDate | date : 'MMM d, yyyy, h:mm a' }}
+            </mat-error>
+          }
+        </mat-form-field>
+
+        <button mat-raised-button
+                color="primary"
+                type="submit"
+                [disabled]="form.invalid && submitted || isSaving()"
+        >Create
+        </button>
+      </form>
+    }
+  </mat-card-content>
+</mat-card>

@@ -1,0 +1,46 @@
+:host{
+  .main-toolbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .menu-button {
+    display: none;
+  }
+
+  .logo {
+    font-weight: bold;
+  }
+
+  .spacer {
+    flex: 1 1 auto;
+  }
+
+  .desktop-menu a {
+    margin-left: 1rem;
+  }
+
+  .mobile-menu {
+    flex-direction: column;
+    background: #1976d2;
+  }
+
+  .mobile-menu a {
+    color: white;
+    padding: 1rem;
+    text-decoration: none;
+  }
+
+  .desktop-menu a.active-link,
+  .mobile-menu a.active-link {
+    background-color: rgba(255, 255, 255, 0.2);
+    border-radius: 4px;
+  }
+
+  @media (max-width: 768px) {
+    .menu-button {
+      display: block;
+    }
+  }
+}

@@ -1,0 +1,17 @@
+<div class="tabel-c">
+  @if (isFavorites) {
+    <app-todo-list [todos$]="todos$"
+                   [title]="'Favorite Todo List'"
+    ></app-todo-list>
+  } @else {
+    <app-todo-list class="mb-8"
+                   [todos$]="todos$"
+                   [title]="'Todo List'"
+    ></app-todo-list>
+    <app-todo-list
+      [todos$]="todayTodos$"
+      [title]="'Today\'s Todo List'"
+      [isTodayTodo]="true"
+    ></app-todo-list>
+  }
+</div>

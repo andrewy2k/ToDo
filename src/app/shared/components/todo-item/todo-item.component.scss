@@ -1,0 +1,19 @@
+:host {
+  .todo-title {
+    font-weight: 500;
+    font-size: 1rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .red-text {
+    color: red;
+  }
+
+  @media (max-width: 768px) {
+    .todo-title {
+      font-size: 1rem;
+    }
+  }
+}

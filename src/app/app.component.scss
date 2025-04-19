@@ -1,0 +1,17 @@
+:host {
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: stretch;
+  justify-content: center;
+  width: 100vw;
+
+  .container {
+    display: flex;
+    flex-flow: column nowrap;
+    align-items: stretch;
+    width: 100%;
+    align-self: center;
+    overflow: hidden;
+    min-height: calc(100vh - 64px);
+  }
+}
