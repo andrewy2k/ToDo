@@ -3,59 +3,62 @@
     <mat-card-header>
       <mat-card-title>{{ title }}</mat-card-title>
     </mat-card-header>
+
     <mat-card-content>
-      <table mat-table
-             matSort
-             class="desktop"
-             [dataSource]="sortedTodos()"
-             [trackBy]="trackById"
-             (matSortChange)="sortData($event)"
-      >
-        @for (column of tableHeader; track column.key) {
-          <ng-container [matColumnDef]="column.key">
-            @if (column.sortable) {
-              <th *matHeaderCellDef
-                  mat-sort-header="{{ column.key }}"
-                  [style.max-width]="column.maxWidth || 'auto'"
-                  [style.width]="column.maxWidth || 'auto'"
-              >
-                {{ column.title }}
-              </th>
-            } @else {
-              <th *matHeaderCellDef mat-header-cell
-                  [style.max-width]="column.maxWidth || 'auto'"
-                  [style.width]="column.maxWidth || 'auto'">
-                {{ column.title }}
-              </th>
-            }
 
-            <td mat-cell *matCellDef="let element">
-              <app-todo-item [todo]="element" [column]="column.key"></app-todo-item>
-            </td>
-          </ng-container>
-        }
+      @if (!(resize$ | async)) {
+        <table mat-table
+               matSort
+               [dataSource]="sortedTodos()"
+               [trackBy]="trackById"
+               (matSortChange)="sortData($event)">
 
-        <tr mat-header-row *matHeaderRowDef="columns"></tr>
-        <tr mat-row *matRowDef="let row; columns: columns;"></tr>
-      </table>
-
-      @for (todo of sortedTodos(); track todo[EToDoKey.Id]) {
-        <mat-grid-list class="mobile" cols="4" rowHeight="70px">
           @for (column of tableHeader; track column.key) {
-            <mat-grid-tile class="mobile-cell"
-                           [colspan]="column.cols"
-                           [rowspan]="column.rows">
-              <div class="todo">
-                <div class="todo__caption">
+            <ng-container [matColumnDef]="column.key">
+              @if (column.sortable) {
+                <th *matHeaderCellDef
+                    mat-sort-header="{{ column.key }}"
+                    [style.max-width]="column.maxWidth || 'auto'"
+                    [style.width]="column.maxWidth || 'auto'">
                   {{ column.title }}
-                </div>
-                <div class="todo__content">
-                  <app-todo-item [todo]="todo" [column]="column.key"></app-todo-item>
-                </div>
-              </div>
-            </mat-grid-tile>
+                </th>
+              } @else {
+                <th *matHeaderCellDef
+                    [style.max-width]="column.maxWidth || 'auto'"
+                    [style.width]="column.maxWidth || 'auto'">
+                  {{ column.title }}
+                </th>
+              }
+
+              <td mat-cell *matCellDef="let element">
+                <app-todo-item [todo]="element" [column]="column.key"></app-todo-item>
+              </td>
+            </ng-container>
           }
-        </mat-grid-list>
+
+          <tr mat-header-row *matHeaderRowDef="columns"></tr>
+          <tr mat-row *matRowDef="let row; columns: columns;"></tr>
+        </table>
+      } @else {
+        @for (todo of sortedTodos(); track todo[EToDoKey.Id]) {
+          <mat-grid-list cols="4" rowHeight="70px">
+            @for (column of tableHeader; track column.key) {
+              <mat-grid-tile [colspan]="column.cols"
+                             [rowspan]="column.rows">
+                <div class="todo"
+                     [class.todo_border-dashed]="column.cols === 4"
+                >
+                  <div class="todo__caption">
+                    {{ column.title }}
+                  </div>
+                  <div class="todo__content">
+                    <app-todo-item [todo]="todo" [column]="column.key"></app-todo-item>
+                  </div>
+                </div>
+              </mat-grid-tile>
+            }
+          </mat-grid-list>
+        }
       }
 
       @if (sortedTodos().length === 0) {
@@ -63,6 +66,7 @@
           No data to display
         </div>
       }
+
     </mat-card-content>
   </mat-card>
 }

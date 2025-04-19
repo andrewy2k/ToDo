@@ -10,7 +10,7 @@ import {
 } from '@angular/core';
 import { ITableHeader } from '../../../models/table';
 import { EToDoKey, ITodo } from '../../../models/todo';
-import { Observable } from 'rxjs';
+import { debounceTime, fromEvent, map, Observable, startWith } from 'rxjs';
 import { MatSort, MatSortHeader, MatSortModule, Sort } from '@angular/material/sort';
 import {
   MatCell,
@@ -24,6 +24,7 @@ import {
 import { TodoItemComponent } from '../todo-item/todo-item.component';
 import { MatCard, MatCardContent, MatCardHeader, MatCardTitle } from '@angular/material/card';
 import { MatGridList, MatGridTile } from '@angular/material/grid-list';
+import { AsyncPipe } from '@angular/common';
 
 @Component({
   selector: 'app-todo-list',
@@ -46,6 +47,7 @@ import { MatGridList, MatGridTile } from '@angular/material/grid-list';
     MatSortModule,
     MatGridList,
     MatGridTile,
+    AsyncPipe,
   ],
   templateUrl: './todo-list.component.html',
   styleUrl: './todo-list.component.scss',
@@ -91,6 +93,11 @@ export class TodoListComponent implements OnInit {
 
   private readonly sortActive: WritableSignal<EToDoKey | null> = signal<EToDoKey | null>(null);
   private readonly sortDirection: WritableSignal<'asc' | 'desc' | '' | null> = signal<'asc' | 'desc' | '' | null>(null);
+  protected readonly resize$: Observable<boolean> = fromEvent(window, 'resize').pipe(
+    debounceTime(150),
+    map(() => window.innerWidth <= 768),
+    startWith(window.innerWidth <= 768)
+  );
 
   public ngOnInit(): void {
     this.initTableHeader();
